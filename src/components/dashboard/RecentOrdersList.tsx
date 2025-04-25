@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
@@ -33,6 +32,9 @@ export const RecentOrdersList = () => {
     return new Date(dateString).toLocaleDateString();
   };
 
+  // Take only the first 5 items
+  const recentFiveOrders = data?.slice(0, 5);
+
   return (
     <Card className="bg-white shadow-sm">
       <CardHeader>
@@ -47,7 +49,7 @@ export const RecentOrdersList = () => {
                 <Skeleton key={i} className="h-12 w-full" />
               ))}
           </div>
-        ) : !data || data.length === 0 ? (
+        ) : !recentFiveOrders || recentFiveOrders.length === 0 ? (
           <div className="flex h-32 items-center justify-center">
             <p className="text-muted-foreground">No orders found</p>
           </div>
@@ -63,7 +65,7 @@ export const RecentOrdersList = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((order) => (
+                {recentFiveOrders.map((order) => (
                   <TableRow key={order.id}>
                     <TableCell>{order.id}</TableCell>
                     <TableCell>{formatDate(order.date)}</TableCell>

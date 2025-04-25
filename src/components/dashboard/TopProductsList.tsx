@@ -25,6 +25,9 @@ export const TopProductsList = () => {
     }).format(value);
   };
 
+  // Take only the first 5 items
+  const topFiveProducts = data?.slice(0, 5);
+
   return (
     <Card className="bg-white shadow-sm">
       <CardHeader>
@@ -39,7 +42,7 @@ export const TopProductsList = () => {
                 <Skeleton key={i} className="h-12 w-full" />
               ))}
           </div>
-        ) : !data || data.length === 0 ? (
+        ) : !topFiveProducts || topFiveProducts.length === 0 ? (
           <div className="flex h-32 items-center justify-center">
             <p className="text-muted-foreground">No products found</p>
           </div>
@@ -53,12 +56,12 @@ export const TopProductsList = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((product) => (
+                {topFiveProducts.map((product) => (
                   <TableRow key={product.id}>
                     <TableCell>
                       <div className="flex items-center space-x-4">
                         <img 
-                          src={product.image || "/placeholder.svg"}
+                          src={"/placeholder.svg"}
                           alt={product.name}
                           className="h-12 w-12 rounded-md object-cover"
                         />
