@@ -1,13 +1,9 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { fetchSalesData } from "@/api/dashboardApi";
 import { useTimeRange } from "@/contexts/TimeRangeContext";
-import { 
-  ToggleGroup, 
-  ToggleGroupItem 
-} from "@/components/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Area,
@@ -20,14 +16,15 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis
+  YAxis,
 } from "recharts";
 import { TIME_RANGE_OPTIONS } from "@/components/ui-shared/TimeRangeFilter";
+import { format } from "date-fns";
 
 type ChartType = "line" | "bar" | "area";
 
 export const SalesChart = () => {
-  const [chartType, setChartType] = useState<ChartType>("area");
+  const [chartType, setChartType] = useState<ChartType>("line");
   const { timeRange } = useTimeRange();
   const { data, isLoading } = useQuery({
     queryKey: ['sales', timeRange],
@@ -43,6 +40,10 @@ export const SalesChart = () => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value);
+  };
+
+  const formatDate = (date: string) => {
+    return format(new Date(date), 'MMM');
   };
 
   const renderChart = () => {
@@ -71,7 +72,7 @@ export const SalesChart = () => {
               <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
               <XAxis 
                 dataKey="date" 
-                tickFormatter={(date) => new Date(date).toLocaleDateString()} 
+                tickFormatter={(date) => formatDate(date)}
                 tick={{ fontSize: 12 }}
               />
               <YAxis 
@@ -102,7 +103,7 @@ export const SalesChart = () => {
               <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
               <XAxis 
                 dataKey="date" 
-                tickFormatter={(date) => new Date(date).toLocaleDateString()} 
+                tickFormatter={(date) => formatDate(date)}
                 tick={{ fontSize: 12 }}
               />
               <YAxis 
@@ -127,7 +128,7 @@ export const SalesChart = () => {
               <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
               <XAxis 
                 dataKey="date" 
-                tickFormatter={(date) => new Date(date).toLocaleDateString()} 
+                tickFormatter={(date) => formatDate(date)}
                 tick={{ fontSize: 12 }}
               />
               <YAxis 
